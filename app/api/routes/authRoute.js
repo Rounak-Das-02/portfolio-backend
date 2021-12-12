@@ -6,9 +6,11 @@ const verify = require("../../controllers/verifyToken")
 
 
 authRouter.post("/register" , userController.create)
-authRouter.get("/show" , verify, userController.showAll)
 authRouter.post("/authenticate", userController.authenticate)
-
+authRouter.get("/show" , verify, userController.showAll)
+authRouter.post("/logout", verify, userController.logout)
+authRouter.post("/logAllout", verify, userController.logAllOut)
+authRouter.post("/tokens", verify, userController.ShowAllTokens)
 
 
 module.exports = authRouter

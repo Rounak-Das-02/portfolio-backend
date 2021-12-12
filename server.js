@@ -10,9 +10,16 @@ app.use(cors())
 
 
 //MongoDB connection
-const mongooseConnection = require("./app/api/config/dbconfig").connection
-mongooseConnection.on("open", () => {
-    console.log("Database Connected ... ")
+// const mongooseConnection = require("./app/api/config/dbconfig").connection
+const mongooseConnection = require("./app/api/config/dbconfig")
+
+// console.log(mongooseConnection["conn1"])
+mongooseConnection.conn1.on("open", () => {
+    console.log("Main Database Connected ... ")
+})
+
+mongooseConnection.conn2.on("open", () => {
+    console.log("Token Database Connected ... ")
 })
 
 const axios = require("axios")
@@ -23,7 +30,7 @@ app.get("/", async (req, res) => {
 })
 
 
-// Routers
+// Routes
 const authRouter = require("./app/api/routes/authRoute")
 app.use("/auth", authRouter)
 

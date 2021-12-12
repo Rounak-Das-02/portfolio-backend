@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const connections = require("../config/dbconfig")
 
 const blogsSchema = mongoose.Schema({
     author_id : {
@@ -13,5 +14,5 @@ const blogsSchema = mongoose.Schema({
     ]
 })
 
-module.exports = mongoose.model("Blogs", blogsSchema)
+module.exports = connections["conn1"].model("Blogs", blogsSchema)
 

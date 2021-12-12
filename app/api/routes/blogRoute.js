@@ -6,7 +6,7 @@ const verify = require("../../controllers/verifyToken")
 
 blogRouter.post("/createblog" , verify , blogController.createBlog)
 blogRouter.get("/showall" , blogController.showAllBlogs)
-blogRouter.post("/delete", verify, blogController.deleteBlog)
+blogRouter.delete("/delete/:id", verify, blogController.deleteBlog)
 blogRouter.get("/getblog/:id", blogController.getBlogById)
 
 
