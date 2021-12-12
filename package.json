@@ -11,10 +11,12 @@
   "author": "Rounak",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "marked": "^4.0.7",
     "mongoose": "^6.1.0"
   },
   "devDependencies": {

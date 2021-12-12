@@ -6,6 +6,7 @@ const verify = async (req, res, next) => {
     try{
         const verified = jwt.verify(token, process.env.ACCESS_TOKEN)
         req.user = verified
+        next()
     }catch(err){
         await res.status(400).json({status:"failure", message: "Invalid Token", data: null});
     }

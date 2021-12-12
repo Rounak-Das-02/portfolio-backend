@@ -4,8 +4,13 @@ const jwt = require("jsonwebtoken")
 require("dotenv").config()
 const saltRounds = 10
 
-const create = async (req, res) => {
+var blacklist = []
+
+const create = async (req, res) => { // Must have my explicit token to create a new Super User ->  Implementation, at a later stage
     try{
+        const user = await User.findOne({name: req.body.name})
+        if(user) return res.status(400).json({status: "failure", message: "User name already exists!!!", data: null});
+        
         const salt = bcrypt.genSaltSync(saltRounds);
         const password = await bcrypt.hash(req.body.password, salt);
         const newUser = new User({
@@ -25,7 +30,7 @@ const create = async (req, res) => {
 const showAll = async(req,res) => {
     try{
         const all = await User.find()
-        res.json(all)
+        res.json({_id : all[0]._id, name : all[0].name})
     }
     catch(err){
         console.log(err)
@@ -38,14 +43,24 @@ const authenticate = async(req,res) => {
         const user = await User.findOne({name: req.body.name})
         const isMatch = await bcrypt.compare(req.body.password, user.password)
         if(!isMatch) return res.status(400).json({status:"failure", message: "Invalid Email/Password", data: null});
-        const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN, { expiresIn: '1h' })
+        const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN, { expiresIn: '6h' })
         // const token = jwt.sign({id: user._id}, process.env.ACCESS_TOKEN)
-        res.header("auth_token", token).json({status:"success", message: "user found!!!", data: {user : user}});
+        res.header("auth_token", token).json({status:"success", message: "user found!!!", data: {id : user._id, name : user.name}});
 
     }catch(err){
         res.status(400).json({status:"failure", message: "user not found!!!", data: null});
     }
 }
 
+const logout = async (req, res) => {
+    try{
+        blacklist.push(res.cookies["auth_token"])
+        res.cookie("auth_token", "" , {expiresIn : 1})
+    }catch(err){
+        console.log("No Cookie")
+    }
+}
 
-module.exports = {create, authenticate, showAll}
+
+
+module.exports = {create, authenticate, showAll, logout}

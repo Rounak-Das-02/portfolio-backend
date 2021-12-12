@@ -1,8 +1,8 @@
 // Author : Rounak
 const express = require('express')
 const app = express()
-
 app.use(express.json())
+
 
 //Cross origin Resource Sharing -> Will do something about it soon
 const cors = require("cors")
@@ -15,20 +15,20 @@ mongooseConnection.on("open", () => {
     console.log("Database Connected ... ")
 })
 
-
-//my Controllers
-const userController = require("./app/controllers/users")
-
-
-app.get("/", (req, res) => {
-    res.send("HELLO NODEJS")
+const axios = require("axios")
+const marked = require("marked")
+app.get("/", async (req, res) => {
+    const result = await axios.get("https://raw.githubusercontent.com/Rounak-Das-02/blogs/master/_posts/2020-06-15-how-i-built-my-first-bot.markdown")
+    res.send(marked.parse(result.data)) // Will be used in React Component later
 })
 
-app.post("/register" , userController.create)
-app.get("/register" , userController.showAll)
-app.post("/authenticate", userController.authenticate)
 
+// Routers
+const authRouter = require("./app/api/routes/authRoute")
+app.use("/auth", authRouter)
 
+const blogRouter = require("./app/api/routes/blogRoute")
+app.use("/blog", blogRouter)
 
 
 
