@@ -45,7 +45,7 @@ const authenticate = async(req,res) => {
         const isMatch = await bcrypt.compare(req.body.password, user.password)
         if(!isMatch) return res.status(400).json({status:"failure", message: "Invalid Email/Password", data: null});
 
-        const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN, { expiresIn: '5s' })
+        const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN, { expiresIn: '6h' })
 
         const tokenList = new TokenList({
             tokenId : token,
@@ -91,7 +91,7 @@ const logAllOut = async(req, res) => {
     try{
         const tokens = await TokenList.updateMany(
             {
-                author_id : req.body.id,
+                author_id : req.body.author_id,
             },
             {
                 "$set" : { black : true}

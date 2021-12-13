@@ -11,9 +11,9 @@ const verify = async (req, res, next) => {
         })
         const tok = tok_find[0]
         
-        if (Date.now() - tok.date_created > 6*60*60*1000)
+        if (Date.now() - tok.date_created > 6*60*60*1000) // Expires automatically after 6 hours whenever someone tries to re-use a token
         {
-            await tok.update({
+            await tok.updateOne({
                 "$set" : {black : true}
             });
             return res.status(400).json({status:"failure", message: "Invalid Token", data: null});
