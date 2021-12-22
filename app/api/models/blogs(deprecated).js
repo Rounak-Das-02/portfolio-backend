@@ -1,0 +1,20 @@
+const mongoose = require("mongoose")
+const connections = require("../config/dbconfig")
+
+const blogsSchema = mongoose.Schema({
+    author_id : {
+        type: mongoose.Schema.Types.ObjectId,
+        required : true,
+    },
+    blogs : [
+        {
+            title : {type : String, required: true},
+            slug : {type : String, default : "No Information Available, to view the blog , click on Read More or See More Blogs"},
+            link : {type : String, required : true},
+            date : {type : Date, default : Date().toString(0,16)}
+        }
+    ]
+})
+
+module.exports = connections["conn1"].model("Blogs", blogsSchema)
+

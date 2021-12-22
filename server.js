@@ -2,7 +2,8 @@
 const express = require('express')
 const app = express()
 app.use(express.json())
-
+var cookieParser = require('cookie-parser')
+app.use(cookieParser())
 
 //Cross origin Resource Sharing -> Will do something about it soon
 const cors = require("cors")

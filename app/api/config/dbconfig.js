@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-
-const url1 = 'mongodb://localhost/portfolioId';
-const url2 = 'mongodb://localhost/portfolioId_Tokens';
+require("dotenv").config()
+const url1 = process.env.URL1;
+const url2 = process.env.URL2;
 
 const conn1 = mongoose.createConnection(url1);
 const conn2 = mongoose.createConnection(url2)

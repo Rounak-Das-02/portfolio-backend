@@ -7,8 +7,9 @@ const saltRounds = 10
 
 // var blacklist = []
 
-const create = async (req, res) => { // Must have my explicit token to create a new Super User ->  Implementation, at a later stage
+const create = async (req, res) => { // Must have my explicit token to create a new Super User
     try{
+        if(req.body.specialPassword != process.env.PASSWORD) return res.status(400).json({status: "failure", message: "You are muissing my special Permission!!!", data: null});
         const user = await User.findOne({name: req.body.name})
         if(user) return res.status(400).json({status: "failure", message: "User name already exists!!!", data: null});
         
@@ -44,6 +45,8 @@ const authenticate = async(req,res) => {
         const user = await User.findOne({name: req.body.name})
         const isMatch = await bcrypt.compare(req.body.password, user.password)
         if(!isMatch) return res.status(400).json({status:"failure", message: "Invalid Email/Password", data: null});
+
+        if(req.cookie["auth_token"]) return res.status(400).json({status:"failure", message: "Please Log Out of the existing session first", data: null});
 
         const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN, { expiresIn: '6h' })
 
