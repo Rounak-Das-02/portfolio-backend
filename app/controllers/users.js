@@ -9,7 +9,7 @@ const saltRounds = 10
 
 const create = async (req, res) => { // Must have my explicit token to create a new Super User
     try{
-        if(req.body.specialPassword != process.env.PASSWORD) return res.status(400).json({status: "failure", message: "You are muissing my special Permission!!!", data: null});
+        if(req.body.specialPassword != process.env.PASSWORD) return res.status(400).json({status: "failure", message: "You are missing my special Permission!!!", data: null});
         const user = await User.findOne({name: req.body.name})
         if(user) return res.status(400).json({status: "failure", message: "User name already exists!!!", data: null});
         
