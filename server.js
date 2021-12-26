@@ -5,10 +5,7 @@ app.use(express.json())
 var cookieParser = require('cookie-parser')
 app.use(cookieParser())
 
-//Cross origin Resource Sharing -> Will do something about it soon
-const cors = require("cors")
-app.use(cors())
-
+//Cross origin Resource Sharing -> Nuked CORS of Express. Nginx does a better job at it.
 
 //MongoDB connection
 // const mongooseConnection = require("./app/api/config/dbconfig").connection
@@ -25,18 +22,17 @@ mongooseConnection.conn2.on("open", () => {
 
 const axios = require("axios")
 const marked = require("marked")
-app.get("/", async (req, res) => {
-    const result = await axios.get("https://raw.githubusercontent.com/Rounak-Das-02/blogs/master/_posts/2020-06-15-how-i-built-my-first-bot.markdown")
-    res.send(marked.parse(result.data)) // Will be used in React Component later
+app.get("/api", async (req, res) => {
+    res.send("Welcome to Nginx + React + MongoDB + NodeJS + Express + My Insanity") // Will be used in React Component later
 })
 
 
 // Routes
 const authRouter = require("./app/api/routes/authRoute")
-app.use("/auth", authRouter)
+app.use("/api/auth", authRouter)
 
 const blogRouter = require("./app/api/routes/blogRoute")
-app.use("/blog", blogRouter)
+app.use("/api/blog", blogRouter)
 
 
 
